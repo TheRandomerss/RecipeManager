@@ -1,0 +1,1957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Culinary Connect | Recipe Organizer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ===== VARIABLES ===== */
+    :root {
+      --primary: #ff6b6b;
+      --primary-dark: #e95f5f;
+      --secondary: #4ecdc4;
+      --dark: #2d3748;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --light-gray: #e9ecef;
+      --success: #38c172;
+      --warning: #ffed4a;
+      --danger: #e3342f;
+      --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --radius: 8px;
+    }
+
+    /* ===== RESET & BASE STYLES ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-main);
+      color: var(--dark);
+      background-color: #f5f7fa;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    button, .btn {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      border-radius: var(--radius);
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .btn-secondary {
+      background-color: var(--secondary);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background-color: #3dbeb6;
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .section {
+      padding: 3rem 0;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 3px;
+      background-color: var(--primary);
+    }
+
+    /* ===== HEADER & NAVIGATION ===== */
+    header {
+      background-color: white;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .logo i {
+      margin-right: 0.5rem;
+      font-size: 1.8rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .search-bar {
+      position: relative;
+      width: 300px;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 0.5rem 1rem 0.5rem 2.5rem;
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius);
+      font-family: inherit;
+    }
+
+    .search-bar i {
+      position: absolute;
+      left: 0.8rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gray);
+    }
+
+    .mobile-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--dark);
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1495521821757-a1efb6729352?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      text-align: center;
+      padding: 5rem 0;
+    }
+
+    .hero-content {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    /* ===== FEATURES SECTION ===== */
+    .features {
+      background-color: white;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 2rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .feature-card h3 {
+      margin-bottom: 1rem;
+    }
+
+    /* ===== RECIPES SECTION ===== */
+    .recipes-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .filter-options {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .filter-select {
+      padding: 0.5rem;
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius);
+      font-family: inherit;
+    }
+
+    .recipes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .recipe-card {
+      background-color: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+
+    .recipe-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .recipe-image {
+      height: 200px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .recipe-content {
+      padding: 1.5rem;
+    }
+
+    .recipe-tags {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .recipe-tag {
+      background-color: var(--light-gray);
+      color: var(--dark);
+      padding: 0.2rem 0.5rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+
+    .recipe-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .recipe-meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .recipe-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .recipe-stats {
+      display: flex;
+      gap: 1rem;
+      color: var(--gray);
+    }
+
+    .recipe-stats span {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* ===== RECIPE DETAIL ===== */
+    .recipe-detail {
+      display: none;
+      background-color: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+
+    .recipe-detail.active {
+      display: block;
+    }
+
+    .recipe-detail-header {
+      position: relative;
+    }
+
+    .recipe-detail-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+    }
+
+    .recipe-detail-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+      color: white;
+      padding: 2rem;
+    }
+
+    .recipe-detail-title {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .recipe-detail-author {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .author-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .recipe-detail-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .recipe-detail-body {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2rem;
+    }
+
+    .recipe-ingredients {
+      background-color: var(--light);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+    }
+
+    .recipe-ingredients h3 {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ingredient-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--light-gray);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ingredient-list li:last-child {
+      border-bottom: none;
+    }
+
+    .recipe-instructions h3 {
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .instruction-list li {
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-left: 2.5rem;
+    }
+
+    .instruction-list li::before {
+      content: attr(data-step);
+      position: absolute;
+      left: 0;
+      top: 0;
+      background-color: var(--primary);
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .recipe-comments {
+      margin-top: 2rem;
+      padding: 0 2rem 2rem;
+    }
+
+    .comment-form {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .comment-form img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .comment-input {
+      flex: 1;
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius);
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      resize: none;
+    }
+
+    .comment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .comment {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .comment img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .comment-content {
+      flex: 1;
+    }
+
+    .comment-author {
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .comment-text {
+      margin-bottom: 0.5rem;
+    }
+
+    .comment-actions {
+      display: flex;
+      gap: 1rem;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .comment-actions span {
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .comment-actions span:hover {
+      color: var(--primary);
+    }
+
+    /* ===== CREATE RECIPE FORM ===== */
+    .create-recipe {
+      display: none;
+      background-color: white;
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .create-recipe.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid var(--light-gray);
+      border-radius: var(--radius);
+      font-family: inherit;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ingredients-container, .instructions-container {
+      margin-bottom: 1rem;
+    }
+
+    .ingredient-item, .instruction-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .remove-btn {
+      background-color: var(--danger);
+      color: white;
+      padding: 0.3rem 0.6rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+
+    .add-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary);
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    /* ===== USER PROFILE ===== */
+    .profile {
+      display: none;
+    }
+
+    .profile.active {
+      display: block;
+    }
+
+    .profile-header {
+      background-color: white;
+      border-radius: var(--radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .profile-avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-name {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .profile-bio {
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+
+    .profile-stats {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .profile-tabs {
+      display: flex;
+      background-color: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+
+    .profile-tab {
+      flex: 1;
+      text-align: center;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .profile-tab.active {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .profile-tab:hover:not(.active) {
+      background-color: var(--light-gray);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background-color: var(--dark);
+      color: white;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      padding: 3rem 0;
+    }
+
+    .footer-logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-description {
+      margin-bottom: 1.5rem;
+      color: #b3b3b3;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background-color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    .footer-title {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .footer-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 30px;
+      height: 2px;
+      background-color: var(--primary);
+    }
+
+    .footer-links li {
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-links a {
+      color: #b3b3b3;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .newsletter-form {
+      display: flex;
+      margin-top: 1rem;
+    }
+
+    .newsletter-input {
+      flex: 1;
+      padding: 0.8rem;
+      border: none;
+      border-radius: var(--radius) 0 0 var(--radius);
+      font-family: inherit;
+    }
+
+    .newsletter-btn {
+      background-color: var(--primary);
+      color: white;
+      padding: 0 1rem;
+      border: none;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      cursor: pointer;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding: 1.5rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #b3b3b3;
+    }
+
+    /* ===== RESPONSIVE STYLES ===== */
+    @media (max-width: 992px) {
+      .recipe-detail-body {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .mobile-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background-color: white;
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: var(--shadow);
+        transform: translateY(-150%);
+        transition: transform 0.3s ease;
+        z-index: 999;
+      }
+
+      .nav-links.active {
+        transform: translateY(0);
+      }
+
+      .search-bar {
+        width: 100%;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+      }
+
+      .profile-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .profile-stats {
+        justify-content: center;
+      }
+
+      .profile-actions {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .recipes-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+
+      .filter-options {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+      }
+
+      .recipe-detail-title {
+        font-size: 1.5rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===== UTILITY CLASSES ===== */
+    .hidden {
+      display: none !important;
+    }
+
+    .text-primary {
+      color: var(--primary);
+    }
+
+    .bg-primary {
+      background-color: var(--primary);
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mt-4 { margin-top: 2rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .mb-3 { margin-bottom: 1.5rem; }
+    .mb-4 { margin-bottom: 2rem; }
+  </style>
+</head>
+<body>
+  <!-- Header & Navigation -->
+  <header>
+    <div class="container">
+      <nav class="navbar">
+        <a href="#" class="logo" id="logo">
+          <i class="fas fa-utensils"></i>
+          Culinary Connect
+        </a>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#" class="nav-link active" data-view="home">Home</a></li>
+          <li><a href="#" class="nav-link" data-view="recipes">Recipes</a></li>
+          <li><a href="#" class="nav-link" data-view="create">Create Recipe</a></li>
+          <li><a href="#" class="nav-link" data-view="community">Community</a></li>
+          <li><a href="#" class="nav-link" data-view="about">About</a></li>
+        </ul>
+        <div class="nav-actions">
+          <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search recipes...">
+          </div>
+          <button class="mobile-toggle" id="mobileToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Home View -->
+    <section class="view active" id="homeView">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-content">
+            <h1>Discover, Create, and Share Delicious Recipes</h1>
+            <p>Join our community of food enthusiasts and explore thousands of recipes from around the world.</p>
+            <div class="hero-buttons">
+              <button class="btn btn-primary" id="exploreBtn">Explore Recipes</button>
+              <button class="btn btn-outline" id="createRecipeBtn">Create Recipe</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Features Section -->
+      <section class="features section">
+        <div class="container">
+          <h2 class="section-title">Why Choose Culinary Connect?</h2>
+          <div class="features-grid">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-book-open"></i>
+              </div>
+              <h3>Save Recipes</h3>
+              <p>Store all your favorite recipes in one place with detailed ingredients and instructions.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-share-alt"></i>
+              </div>
+              <h3>Share Recipes</h3>
+              <p>Share your culinary creations with friends, family, and our global community.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-search"></i>
+              </div>
+              <h3>Search Recipes</h3>
+              <p>Find the perfect recipe based on ingredients, cuisine, or dietary preferences.</p>
+            </div>
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="fas fa-users"></i>
+              </div>
+              <h3>Join Community</h3>
+              <p>Connect with other food lovers, get feedback, and discover new culinary trends.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Recipes Section -->
+      <section class="section">
+        <div class="container">
+          <h2 class="section-title">Featured Recipes</h2>
+          <div class="recipes-grid">
+            <div class="recipe-card" data-id="1">
+              <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" alt="Healthy Vegetable Salad" class="recipe-image">
+              <div class="recipe-content">
+                <div class="recipe-tags">
+                  <span class="recipe-tag">Vegetarian</span>
+                  <span class="recipe-tag">Healthy</span>
+                </div>
+                <h3 class="recipe-title">Healthy Vegetable Salad</h3>
+                <div class="recipe-meta">
+                  <span><i class="far fa-clock"></i> 15 mins</span>
+                  <span><i class="fas fa-fire"></i> 250 cal</span>
+                </div>
+                <div class="recipe-actions">
+                  <button class="btn btn-outline btn-sm">View Recipe</button>
+                  <div class="recipe-stats">
+                    <span><i class="far fa-heart"></i> 124</span>
+                    <span><i class="far fa-comment"></i> 32</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="recipe-card" data-id="2">
+              <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141" alt="Homemade Pasta" class="recipe-image">
+              <div class="recipe-content">
+                <div class="recipe-tags">
+                  <span class="recipe-tag">Italian</span>
+                  <span class="recipe-tag">Dinner</span>
+                </div>
+                <h3 class="recipe-title">Homemade Pasta Carbonara</h3>
+                <div class="recipe-meta">
+                  <span><i class="far fa-clock"></i> 30 mins</span>
+                  <span><i class="fas fa-fire"></i> 450 cal</span>
+                </div>
+                <div class="recipe-actions">
+                  <button class="btn btn-outline btn-sm">View Recipe</button>
+                  <div class="recipe-stats">
+                    <span><i class="far fa-heart"></i> 98</span>
+                    <span><i class="far fa-comment"></i> 24</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="recipe-card" data-id="3">
+              <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" alt="Margherita Pizza" class="recipe-image">
+              <div class="recipe-content">
+                <div class="recipe-tags">
+                  <span class="recipe-tag">Italian</span>
+                  <span class="recipe-tag">Comfort Food</span>
+                </div>
+                <h3 class="recipe-title">Classic Margherita Pizza</h3>
+                <div class="recipe-meta">
+                  <span><i class="far fa-clock"></i> 45 mins</span>
+                  <span><i class="fas fa-fire"></i> 380 cal</span>
+                </div>
+                <div class="recipe-actions">
+                  <button class="btn btn-outline btn-sm">View Recipe</button>
+                  <div class="recipe-stats">
+                    <span><i class="far fa-heart"></i> 156</span>
+                    <span><i class="far fa-comment"></i> 42</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-4">
+            <button class="btn btn-primary" id="viewAllRecipesBtn">View All Recipes</button>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- Recipes View -->
+    <section class="view" id="recipesView">
+      <div class="container section">
+        <h2 class="section-title">Browse Recipes</h2>
+        <div class="recipes-header">
+          <div class="filter-options">
+            <select class="filter-select">
+              <option value="">All Categories</option>
+              <option value="breakfast">Breakfast</option>
+              <option value="lunch">Lunch</option>
+              <option value="dinner">Dinner</option>
+              <option value="dessert">Dessert</option>
+              <option value="snack">Snack</option>
+            </select>
+            <select class="filter-select">
+              <option value="">All Cuisines</option>
+              <option value="italian">Italian</option>
+              <option value="mexican">Mexican</option>
+              <option value="indian">Indian</option>
+              <option value="chinese">Chinese</option>
+              <option value="american">American</option>
+            </select>
+            <select class="filter-select">
+              <option value="">Dietary Preferences</option>
+              <option value="vegetarian">Vegetarian</option>
+              <option value="vegan">Vegan</option>
+              <option value="gluten-free">Gluten-Free</option>
+              <option value="keto">Keto</option>
+              <option value="paleo">Paleo</option>
+            </select>
+            <select class="filter-select">
+              <option value="newest">Newest</option>
+              <option value="popular">Most Popular</option>
+              <option value="trending">Trending</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" id="filterSearchBtn">Search</button>
+        </div>
+        <div class="recipes-grid">
+          <div class="recipe-card" data-id="1">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" alt="Healthy Vegetable Salad" class="recipe-image">
+            <div class="recipe-content">
+              <div class="recipe-tags">
+                <span class="recipe-tag">Vegetarian</span>
+                <span class="recipe-tag">Healthy</span>
+              </div>
+              <h3 class="recipe-title">Healthy Vegetable Salad</h3>
+              <div class="recipe-meta">
+                <span><i class="far fa-clock"></i> 15 mins</span>
+                <span><i class="fas fa-fire"></i> 250 cal</span>
+              </div>
+              <div class="recipe-actions">
+                <button class="btn btn-outline btn-sm view-recipe-btn">View Recipe</button>
+                <div class="recipe-stats">
+                  <span><i class="far fa-heart"></i> 124</span>
+                  <span><i class="far fa-comment"></i> 32</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="recipe-card" data-id="2">
+            <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141" alt="Homemade Pasta" class="recipe-image">
+            <div class="recipe-content">
+              <div class="recipe-tags">
+                <span class="recipe-tag">Italian</span>
+                <span class="recipe-tag">Dinner</span>
+              </div>
+              <h3 class="recipe-title">Homemade Pasta Carbonara</h3>
+              <div class="recipe-meta">
+                <span><i class="far fa-clock"></i> 30 mins</span>
+                <span><i class="fas fa-fire"></i> 450 cal</span>
+              </div>
+              <div class="recipe-actions">
+                <button class="btn btn-outline btn-sm view-recipe-btn">View Recipe</button>
+                <div class="recipe-stats">
+                  <span><i class="far fa-heart"></i> 98</span>
+                  <span><i class="far fa-comment"></i> 24</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="recipe-card" data-id="3">
+            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" alt="Margherita Pizza" class="recipe-image">
+            <div class="recipe-content">
+              <div class="recipe-tags">
+                <span class="recipe-tag">Italian</span>
+                <span class="recipe-tag">Comfort Food</span>
+              </div>
+              <h3 class="recipe-title">Classic Margherita Pizza</h3>
+              <div class="recipe-meta">
+                <span><i class="far fa-clock"></i> 45 mins</span>
+                <span><i class="fas fa-fire"></i> 380 cal</span>
+              </div>
+              <div class="recipe-actions">
+                <button class="btn btn-outline btn-sm view-recipe-btn">View Recipe</button>
+                <div class="recipe-stats">
+                  <span><i class="far fa-heart"></i> 156</span>
+                  <span><i class="far fa-comment"></i> 42</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="recipe-card" data-id="4">
+            <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8" alt="Chocolate Cake" class="recipe-image">
+            <div class="recipe-content">
+              <div class="recipe-tags">
+                <span class="recipe-tag">Dessert</span>
+                <span class="recipe-tag">Baking</span>
+              </div>
+              <h3 class="recipe-title">Triple Chocolate Cake</h3>
+              <div class="recipe-meta">
+                <span><i class="far fa-clock"></i> 90 mins</span>
+                <span><i class="fas fa-fire"></i> 520 cal</span>
+              </div>
+              <div class="recipe-actions">
+                <button class="btn btn-outline btn-sm view-recipe-btn">View Recipe</button>
+                <div class="recipe-stats">
+                  <span><i class="far fa-heart"></i> 210</span>
+                  <span><i class="far fa-comment"></i> 56</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="recipe-card" data-id="5">
+            <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" alt="Vegetable Stir Fry" class="recipe-image">
+            <div class="recipe-content">
+              <div class="recipe-tags">
+                <span class="recipe-tag">Asian</span>
+                <span class="recipe-tag">Vegan</span>
+              </div>
+              <h3 class="recipe-title">Vegetable Stir Fry</h3>
+              <div class="recipe-meta">
+                <span><i class="far fa-clock"></i> 25 mins</span>
+                <span><i class="fas fa-fire"></i> 320 cal</span>
+              </div>
+              <div class="recipe-actions">
+                <button class="btn btn-outline btn-sm view-recipe-btn">View Recipe</button>
+                <div class="recipe-stats">
+                  <span><i class="far fa-heart"></i> 87</span>
+                  <span><i class="far fa-comment"></i> 19</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="recipe-card" data-id="6">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" alt="Grilled Steak" class="recipe-image">
+            <div class="recipe-content">
+              <div class="recipe-tags">
+                <span class="recipe-tag">Meat</span>
+                <span class="recipe-tag">Dinner</span>
+              </div>
+              <h3 class="recipe-title">Perfect Grilled Steak</h3>
+              <div class="recipe-meta">
+                <span><i class="far fa-clock"></i> 35 mins</span>
+                <span><i class="fas fa-fire"></i> 480 cal</span>
+              </div>
+              <div class="recipe-actions">
+                <button class="btn btn-outline btn-sm view-recipe-btn">View Recipe</button>
+                <div class="recipe-stats">
+                  <span><i class="far fa-heart"></i> 142</span>
+                  <span><i class="far fa-comment"></i> 38</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recipe Detail -->
+      <div class="container">
+        <div class="recipe-detail" id="recipeDetail">
+          <div class="recipe-detail-header">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" alt="Healthy Vegetable Salad" class="recipe-detail-image">
+            <div class="recipe-detail-overlay">
+              <h2 class="recipe-detail-title">Healthy Vegetable Salad</h2>
+              <div class="recipe-detail-author">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Author Avatar" class="author-avatar">
+                <span>By <strong>Sarah Johnson</strong></span>
+              </div>
+              <div class="recipe-detail-actions">
+                <button class="btn btn-primary"><i class="far fa-heart"></i> Save Recipe</button>
+                <button class="btn btn-secondary"><i class="fas fa-share-alt"></i> Share</button>
+                <button class="btn btn-outline"><i class="fas fa-print"></i> Print</button>
+              </div>
+            </div>
+          </div>
+          <div class="recipe-detail-body">
+            <div class="recipe-ingredients">
+              <h3><i class="fas fa-list"></i> Ingredients</h3>
+              <ul class="ingredient-list">
+                <li><i class="fas fa-check"></i> 2 cups mixed greens</li>
+                <li><i class="fas fa-check"></i> 1 cucumber, diced</li>
+                <li><i class="fas fa-check"></i> 1 bell pepper, sliced</li>
+                <li><i class="fas fa-check"></i> 1 cup cherry tomatoes, halved</li>
+                <li><i class="fas fa-check"></i> 1/4 red onion, thinly sliced</li>
+                <li><i class="fas fa-check"></i> 1/2 cup feta cheese, crumbled</li>
+                <li><i class="fas fa-check"></i> 1/4 cup Kalamata olives</li>
+                <li><i class="fas fa-check"></i> 2 tbsp olive oil</li>
+                <li><i class="fas fa-check"></i> 1 tbsp lemon juice</li>
+                <li><i class="fas fa-check"></i> 1 tsp dried oregano</li>
+                <li><i class="fas fa-check"></i> Salt and pepper to taste</li>
+              </ul>
+            </div>
+            <div class="recipe-instructions">
+              <h3><i class="fas fa-utensils"></i> Instructions</h3>
+              <ol class="instruction-list">
+                <li data-step="1">
+                  In a large bowl, combine the mixed greens, cucumber, bell pepper, cherry tomatoes, and red onion.
+                </li>
+                <li data-step="2">
+                  Sprinkle the feta cheese and Kalamata olives over the vegetables.
+                </li>
+                <li data-step="3">
+                  In a small bowl, whisk together the olive oil, lemon juice, dried oregano, salt, and pepper.
+                </li>
+                <li data-step="4">
+                  Pour the dressing over the salad and toss gently to combine.
+                </li>
+                <li data-step="5">
+                  Serve immediately or refrigerate for up to 30 minutes to allow the flavors to meld.
+                </li>
+              </ol>
+              <div class="recipe-meta mt-4">
+                <div><strong>Prep Time:</strong> 15 minutes</div>
+                <div><strong>Cooking Time:</strong> 0 minutes</div>
+                <div><strong>Total Time:</strong> 15 minutes</div>
+                <div><strong>Servings:</strong> 4</div>
+                <div><strong>Calories:</strong> 250 per serving</div>
+              </div>
+              <div class="recipe-tags mt-3">
+                <span class="recipe-tag">Vegetarian</span>
+                <span class="recipe-tag">Healthy</span>
+                <span class="recipe-tag">Salad</span>
+                <span class="recipe-tag">Mediterranean</span>
+                <span class="recipe-tag">Quick</span>
+              </div>
+            </div>
+          </div>
+          <div class="recipe-comments">
+            <h3 class="mb-3">Comments (32)</h3>
+            <div class="comment-form">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar">
+              <textarea class="comment-input" placeholder="Add a comment..."></textarea>
+              <button class="btn btn-primary">Post</button>
+            </div>
+            <div class="comment-list">
+              <div class="comment">
+                <img src="https://randomuser.me/api/portraits/women/22.jpg" alt="User Avatar">
+                <div class="comment-content">
+                  <div class="comment-author">Emily Wilson</div>
+                  <div class="comment-text">
+                    I made this salad for lunch yesterday and it was delicious! I added some grilled chicken to make it more filling. Will definitely make it again!
+                  </div>
+                  <div class="comment-actions">
+                    <span><i class="far fa-heart"></i> Like (12)</span>
+                    <span><i class="far fa-comment"></i> Reply</span>
+                    <span>2 days ago</span>
+                  </div>
+                </div>
+              </div>
+              <div class="comment">
+                <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="User Avatar">
+                <div class="comment-content">
+                  <div class="comment-author">Michael Brown</div>
+                  <div class="comment-text">
+                    Great recipe! I substituted the feta with goat cheese and it worked really well. Thanks for sharing!
+                  </div>
+                  <div class="comment-actions">
+                    <span><i class="far fa-heart"></i> Like (8)</span>
+                    <span><i class="far fa-comment"></i> Reply</span>
+                    <span>5 days ago</span>
+                  </div>
+                </div>
+              </div>
+              <div class="comment">
+                <img src="https://randomuser.me/api/portraits/women/56.jpg" alt="User Avatar">
+                <div class="comment-content">
+                  <div class="comment-author">Jessica Martinez</div>
+                  <div class="comment-text">
+                    I've been looking for healthy lunch ideas and this is perfect! So fresh and flavorful.
+                  </div>
+                  <div class="comment-actions">
+                    <span><i class="far fa-heart"></i> Like (5)</span>
+                    <span><i class="far fa-comment"></i> Reply</span>
+                    <span>1 week ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-center mt-3">
+              <button class="btn btn-outline">Load More Comments</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Create Recipe View -->
+    <section class="view" id="createView">
+      <div class="container section">
+        <h2 class="section-title">Create New Recipe</h2>
+        <div class="create-recipe active">
+          <form id="recipeForm">
+            <div class="form-group">
+              <label for="recipeTitle">Recipe Title</label>
+              <input type="text" id="recipeTitle" class="form-control" placeholder="Enter recipe title" required>
+            </div>
+            <div class="form-group">
+              <label for="recipeDescription">Description</label>
+              <textarea id="recipeDescription" class="form-control" rows="3" placeholder="Briefly describe your recipe"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="recipeImage">Recipe Image</label>
+              <input type="file" id="recipeImage" class="form-control">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="prepTime">Prep Time (minutes)</label>
+                <input type="number" id="prepTime" class="form-control" min="0">
+              </div>
+              <div class="form-group">
+                <label for="cookTime">Cook Time (minutes)</label>
+                <input type="number" id="cookTime" class="form-control" min="0">
+              </div>
+              <div class="form-group">
+                <label for="servings">Servings</label>
+                <input type="number" id="servings" class="form-control" min="1">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Dietary Information</label>
+              <div class="checkbox-group">
+                <div class="checkbox-item">
+                  <input type="checkbox" id="vegetarian">
+                  <label for="vegetarian">Vegetarian</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="vegan">
+                  <label for="vegan">Vegan</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="glutenFree">
+                  <label for="glutenFree">Gluten-Free</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="dairyFree">
+                  <label for="dairyFree">Dairy-Free</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="keto">
+                  <label for="keto">Keto</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="checkbox" id="paleo">
+                  <label for="paleo">Paleo</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cuisine">Cuisine</label>
+              <select id="cuisine" class="form-control">
+                <option value="">Select Cuisine</option>
+                <option value="american">American</option>
+                <option value="italian">Italian</option>
+                <option value="mexican">Mexican</option>
+                <option value="asian">Asian</option>
+                <option value="mediterranean">Mediterranean</option>
+                <option value="indian">Indian</option>
+                <option value="french">French</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Ingredients</label>
+              <div class="ingredients-container" id="ingredientsContainer">
+                <div class="ingredient-item">
+                  <input type="text" class="form-control" placeholder="Ingredient (e.g., 2 cups flour)">
+                  <button type="button" class="remove-btn"><i class="fas fa-times"></i></button>
+                </div>
+              </div>
+              <div class="add-btn" id="addIngredientBtn">
+                <i class="fas fa-plus"></i> Add Ingredient
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Instructions</label>
+              <div class="instructions-container" id="instructionsContainer">
+                <div class="instruction-item">
+                  <textarea class="form-control" rows="2" placeholder="Describe this step"></textarea>
+                  <button type="button" class="remove-btn"><i class="fas fa-times"></i></button>
+                </div>
+              </div>
+              <div class="add-btn" id="addInstructionBtn">
+                <i class="fas fa-plus"></i> Add Instruction
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="recipeTags">Tags (separate with commas)</label>
+              <input type="text" id="recipeTags" class="form-control" placeholder="e.g., dinner, quick, family-friendly">
+            </div>
+            <div class="form-group">
+              <label>Privacy Settings</label>
+              <div class="checkbox-group">
+                <div class="checkbox-item">
+                  <input type="radio" id="public" name="privacy" value="public" checked>
+                  <label for="public">Public (visible to everyone)</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="radio" id="private" name="privacy" value="private">
+                  <label for="private">Private (only visible to you)</label>
+                </div>
+                <div class="checkbox-item">
+                  <input type="radio" id="friends" name="privacy" value="friends">
+                  <label for="friends">Friends Only (visible to your followers)</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn btn-outline" id="saveAsDraftBtn">Save as Draft</button>
+              <button type="submit" class="btn btn-primary">Publish Recipe</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profile View -->
+    <section class="view" id="profileView">
+      <div class="container section">
+        <div class="profile active">
+          <div class="profile-header">
+            <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="User Avatar" class="profile-avatar">
+            <div class="profile-info">
+              <h2 class="profile-name">Emma Wilson</h2>
+              <p class="profile-bio">Food enthusiast and home cook. I love experimenting with new flavors and sharing my culinary adventures!</p>
+              <div class="profile-stats">
+                <div class="stat-item">
+                  <div class="stat-value">42</div>
+                  <div class="stat-label">Recipes</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">156</div>
+                  <div class="stat-label">Followers</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">98</div>
+                  <div class="stat-label">Following</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value">1.2k</div>
+                  <div class="stat-label">Likes</div>
+                </div>
+              </div>
+              <div class="profile-actions">
+                <button class="btn btn-primary"><i class="fas fa-user-plus"></i> Follow</button>
+                <button class="btn btn-outline"><i class="fas fa-envelope"></i> Message</button>
+                <button class="btn btn-outline"><i class="fas fa-cog"></i> Edit Profile</button>
+              </div>
+            </div>
+          </div>
+          <div class="profile-tabs">
+            <div class="profile-tab active" data-tab="recipes">My Recipes</div>
+            <div class="profile-tab" data-tab="saved">Saved Recipes</div>
+            <div class="profile-tab" data-tab="collections">Collections</div>
+            <div class="profile-tab" data-tab="activity">Activity</div>
+          </div>
+          <div class="tab-content active" id="recipesTab">
+            <div class="recipes-grid">
+              <div class="recipe-card">
+                <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141" alt="Homemade Pasta" class="recipe-image">
+                <div class="recipe-content">
+                  <div class="recipe-tags">
+                    <span class="recipe-tag">Italian</span>
+                    <span class="recipe-tag">Dinner</span>
+                  </div>
+                  <h3 class="recipe-title">Homemade Pasta Carbonara</h3>
+                  <div class="recipe-meta">
+                    <span><i class="far fa-clock"></i> 30 mins</span>
+                    <span><i class="fas fa-fire"></i> 450 cal</span>
+                  </div>
+                  <div class="recipe-actions">
+                    <button class="btn btn-outline btn-sm">View Recipe</button>
+                    <div class="recipe-stats">
+                      <span><i class="far fa-heart"></i> 98</span>
+                      <span><i class="far fa-comment"></i> 24</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="recipe-card">
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38" alt="Margherita Pizza" class="recipe-image">
+                <div class="recipe-content">
+                  <div class="recipe-tags">
+                    <span class="recipe-tag">Italian</span>
+                    <span class="recipe-tag">Comfort Food</span>
+                  </div>
+                  <h3 class="recipe-title">Classic Margherita Pizza</h3>
+                  <div class="recipe-meta">
+                    <span><i class="far fa-clock"></i> 45 mins</span>
+                    <span><i class="fas fa-fire"></i> 380 cal</span>
+                  </div>
+                  <div class="recipe-actions">
+                    <button class="btn btn-outline btn-sm">View Recipe</button>
+                    <div class="recipe-stats">
+                      <span><i class="far fa-heart"></i> 156</span>
+                      <span><i class="far fa-comment"></i> 42</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="recipe-card">
+                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd" alt="Vegetable Stir Fry" class="recipe-image">
+                <div class="recipe-content">
+                  <div class="recipe-tags">
+                    <span class="recipe-tag">Asian</span>
+                    <span class="recipe-tag">Vegan</span>
+                  </div>
+                  <h3 class="recipe-title">Vegetable Stir Fry</h3>
+                  <div class="recipe-meta">
+                    <span><i class="far fa-clock"></i> 25 mins</span>
+                    <span><i class="fas fa-fire"></i> 320 cal</span>
+                  </div>
+                  <div class="recipe-actions">
+                    <button class="btn btn-outline btn-sm">View Recipe</button>
+                    <div class="recipe-stats">
+                      <span><i class="far fa-heart"></i> 87</span>
+                      <span><i class="far fa-comment"></i> 19</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-content" id="savedTab">
+            <div class="recipes-grid">
+              <div class="recipe-card">
+                <img src="https://images.unsplash.com/photo-1563379926898-05f4575a45d8" alt="Chocolate Cake" class="recipe-image">
+                <div class="recipe-content">
+                  <div class="recipe-tags">
+                    <span class="recipe-tag">Dessert</span>
+                    <span class="recipe-tag">Baking</span>
+                  </div>
+                  <h3 class="recipe-title">Triple Chocolate Cake</h3>
+                  <div class="recipe-meta">
+                    <span><i class="far fa-clock"></i> 90 mins</span>
+                    <span><i class="fas fa-fire"></i> 520 cal</span>
+                  </div>
+                  <div class="recipe-actions">
+                    <button class="btn btn-outline btn-sm">View Recipe</button>
+                    <div class="recipe-stats">
+                      <span><i class="far fa-heart"></i> 210</span>
+                      <span><i class="far fa-comment"></i> 56</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="recipe-card">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" alt="Grilled Steak" class="recipe-image">
+                <div class="recipe-content">
+                  <div class="recipe-tags">
+                    <span class="recipe-tag">Meat</span>
+                    <span class="recipe-tag">Dinner</span>
+                  </div>
+                  <h3 class="recipe-title">Perfect Grilled Steak</h3>
+                  <div class="recipe-meta">
+                    <span><i class="far fa-clock"></i> 35 mins</span>
+                    <span><i class="fas fa-fire"></i> 480 cal</span>
+                  </div>
+                  <div class="recipe-actions">
+                    <button class="btn btn-outline btn-sm">View Recipe</button>
+                    <div class="recipe-stats">
+                      <span><i class="far fa-heart"></i> 142</span>
+                      <span><i class="far fa-comment"></i> 38</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="tab-content" id="collectionsTab">
+            <div class="collections-grid">
+              <div class="collection-card">
+                <h3>Weeknight Dinners</h3>
+                <p>Quick and easy recipes for busy weeknights</p>
+                <span>12 recipes</span>
+              </div>
+              <div class="collection-card">
+                <h3>Healthy Lunches</h3>
+                <p>Nutritious and delicious lunch ideas</p>
+                <span>8 recipes</span>
+              </div>
+              <div class="collection-card">
+                <h3>Dessert Favorites</h3>
+                <p>Sweet treats for any occasion</p>
+                <span>15 recipes</span>
+              </div>
+            </div>
+          </div>
+          <div class="tab-content" id="activityTab">
+            <div class="activity-feed">
+              <div class="activity-item">
+                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="User Avatar">
+                <div class="activity-content">
+                  <p><strong>Emma Wilson</strong> published a new recipe: <a href="#">Homemade Pasta Carbonara</a></p>
+                  <span>2 days ago</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="User Avatar">
+                <div class="activity-content">
+                  <p><strong>Emma Wilson</strong> liked <a href="#">Triple Chocolate Cake</a></p>
+                  <span>3 days ago</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="User Avatar">
+                <div class="activity-content">
+                  <p><strong>Emma Wilson</strong> commented on <a href="#">Classic Margherita Pizza</a></p>
+                  <span>5 days ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <i class="fas fa-utensils"></i>
+            Culinary Connect
+          </div>
+          <p class="footer-description">
+            Discover, create, and share delicious recipes with our community of food enthusiasts from around the world.
+          </p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3 class="footer-title">Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Browse Recipes</a></li>
+            <li><a href="#">Create Recipe</a></li>
+            <li><a href="#">Community</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3 class="footer-title">Categories</h3>
+          <ul class="footer-links">
+            <li><a href="#">Breakfast</a></li>
+            <li><a href="#">Lunch</a></li>
+            <li><a href="#">Dinner</a></li>
+            <li><a href="#">Desserts</a></li>
+            <li><a href="#">Vegetarian</a></li>
+            <li><a href="#">Vegan</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3 class="footer-title">Newsletter</h3>
+          <p>Subscribe to our newsletter for the latest recipes and cooking tips.</p>
+          <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Your email address">
+            <button type="submit" class="newsletter-btn"><i class="fas fa-paper-plane"></i></button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Culinary Connect. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // DOM Elements
+    const navLinks = document.querySelectorAll('.nav-link');
+    const views = document.querySelectorAll('.view');
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navLinksContainer = document.getElementById('navLinks');
+    const exploreBtn = document.getElementById('exploreBtn');
+    const createRecipeBtn = document.getElementById('createRecipeBtn');
+    const viewAllRecipesBtn = document.getElementById('viewAllRecipesBtn');
+    const viewRecipeBtns = document.querySelectorAll('.view-recipe-btn');
+    const recipeDetail = document.getElementById('recipeDetail');
+    const addIngredientBtn = document.getElementById('addIngredientBtn');
+    const ingredientsContainer = document.getElementById('ingredientsContainer');
+    const addInstructionBtn = document.getElementById('addInstructionBtn');
+    const instructionsContainer = document.getElementById('instructionsContainer');
+    const profileTabs = document.querySelectorAll('.profile-tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const logo = document.getElementById('logo');
+
+    // Navigation
+    function showView(viewId) {
+      views.forEach(view => {
+        view.classList.remove('active');
+      });
+      document.getElementById(viewId).classList.add('active');
+      
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+      });
+      document.querySelector(`[data-view="${viewId.replace('View', '')}"]`)?.classList.add('active');
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const viewId = link.getAttribute('data-view') + 'View';
+        showView(viewId);
+        navLinksContainer.classList.remove('active');
+        mobileToggle.querySelector('i').classList.remove('fa-times');
+        mobileToggle.querySelector('i').classList.add('fa-bars');
+      });
+    });
+
+    // Mobile Menu Toggle
+    mobileToggle.addEventListener('click', () => {
+      navLinksContainer.classList.toggle('active');
+      const icon = mobileToggle.querySelector('i');
+      if (navLinksContainer.classList.contains('active')) {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      } else {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      }
+    });
+
+    // Button Actions
+    exploreBtn?.addEventListener('click', () => {
+      showView('recipesView');
+    });
+
+    createRecipeBtn?.addEventListener('click', () => {
+      showView('createView');
+    });
+
+    viewAllRecipesBtn?.addEventListener('click', () => {
+      showView('recipesView');
+    });
+
+    // View Recipe
+    viewRecipeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        recipeDetail.classList.add('active');
+        window.scrollTo({
+          top: recipeDetail.offsetTop - 100,
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Add Ingredient
+    addIngredientBtn?.addEventListener('click', () => {
+      const ingredientItem = document.createElement('div');
+      ingredientItem.className = 'ingredient-item';
+      ingredientItem.innerHTML = `
+        <input type="text" class="form-control" placeholder="Ingredient (e.g., 2 cups flour)">
+        <button type="button" class="remove-btn"><i class="fas fa-times"></i></button>
+      `;
+      ingredientsContainer.appendChild(ingredientItem);
+      
+      const removeBtn = ingredientItem.querySelector('.remove-btn');
+      removeBtn.addEventListener('click', () => {
+        ingredientItem.remove();
+      });
+    });
+
+    // Add Instruction
+    addInstructionBtn?.addEventListener('click', () => {
+      const instructionItem = document.createElement('div');
+      instructionItem.className = 'instruction-item';
+      instructionItem.innerHTML = `
+        <textarea class="form-control" rows="2" placeholder="Describe this step"></textarea>
+        <button type="button" class="remove-btn"><i class="fas fa-times"></i></button>
+      `;
+      instructionsContainer.appendChild(instructionItem);
+      
+      const removeBtn = instructionItem.querySelector('.remove-btn');
+      removeBtn.addEventListener('click', () => {
+        instructionItem.remove();
+      });
+    });
+
+    // Remove buttons for initial items
+    document.querySelectorAll('.remove-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.closest('.ingredient-item, .instruction-item').remove();
+      });
+    });
+
+    // Profile Tabs
+    profileTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        profileTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        const tabId = tab.getAttribute('data-tab') + 'Tab';
+        tabContents.forEach(content => content.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
+    // Logo click
+    logo.addEventListener('click', (e) => {
+      e.preventDefault();
+      showView('homeView');
+    });
+
+    // Recipe Form Submission
+    document.getElementById('recipeForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Recipe submitted successfully!');
+      // Here you would normally save the recipe data
+    });
+
+    // Initialize remove buttons for ingredients and instructions
+    document.querySelectorAll('.ingredient-item .remove-btn, .instruction-item .remove-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.parentElement.remove();
+      });
+    });
+  </script>
+</body>
+</html>
