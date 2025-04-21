@@ -1,1 +1,915 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameFinder - Video Game Search Engine</title>
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        :root {
+            --primary: #6d28d9;
+            --primary-hover: #5b21b6;
+            --secondary: #10b981;
+            --dark: #111827;
+            --light: #f9fafb;
+            --gray: #6b7280;
+            --light-gray: #e5e7eb;
+            --card-bg: #1f2937;
+            --card-hover: #374151;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            padding: 1rem 0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            color: var(--secondary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(to bottom, var(--dark), #1a202c);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Search Form */
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--card-bg);
+            border-radius: 0.5rem;
+            background-color: var(--card-bg);
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.3);
+        }
+
+        .search-button {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Filter Controls */
+        .filter-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-select {
+            padding: 0.5rem;
+            background-color: var(--card-bg);
+            color: var(--light);
+            border: 1px solid var(--card-hover);
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Autocomplete */
+        .autocomplete-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            z-index: 20;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .autocomplete-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid var(--card-hover);
+        }
+
+        .autocomplete-item:hover {
+            background-color: var(--card-hover);
+        }
+
+        .autocomplete-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Game Results */
+        .results-info {
+            margin-bottom: 1rem;
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .game-card {
+            background-color: var(--card-bg);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .game-info {
+            padding: 1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--light);
+        }
+
+        .game-meta {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .game-genre, .game-platform {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            background-color: var(--card-hover);
+            color: var(--light-gray);
+        }
+
+        .game-description {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin-top: auto;
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 3rem 0;
+            color: var(--gray);
+        }
+
+        .no-results h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--card-bg);
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-text {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .game-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.75rem;
+            }
+
+            .filter-controls {
+                flex-direction: column;
+            }
+
+            .game-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <a href="#" class="logo">
+                <span class="logo-icon">🎮</span>
+                <span>GameFinder</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Find Your Next Gaming Adventure</h1>
+            <p>Search through thousands of games across multiple platforms and genres to discover your next favorite title.</p>
+            
+            <!-- Search Form -->
+            <div class="search-container">
+                <form class="search-form" id="searchForm">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchInput" 
+                        placeholder="Search for games by title, genre, or platform..."
+                        autocomplete="off"
+                    >
+                    <button type="submit" class="search-button">Search</button>
+                </form>
+                
+                <!-- Autocomplete Dropdown -->
+                <div class="autocomplete-container" id="autocompleteContainer"></div>
+                
+                <!-- Filter Controls -->
+                <div class="filter-controls">
+                    <select class="filter-select" id="genreFilter">
+                        <option value="">All Genres</option>
+                        <!-- Genres will be populated by JavaScript -->
+                    </select>
+                    
+                    <select class="filter-select" id="platformFilter">
+                        <option value="">All Platforms</option>
+                        <!-- Platforms will be populated by JavaScript -->
+                    </select>
+                    
+                    <select class="filter-select" id="sortBy">
+                        <option value="title">Sort by Title</option>
+                        <option value="releaseYear">Sort by Release Year</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Results Section -->
+    <section class="container">
+        <div class="results-info" id="resultsInfo"></div>
+        
+        <!-- Loading Spinner -->
+        <div class="loading" id="loadingSpinner">
+            <div class="loading-spinner"></div>
+        </div>
+        
+        <!-- Game Grid -->
+        <div class="game-grid" id="gameGrid"></div>
+        
+        <!-- No Results Message -->
+        <div class="no-results" id="noResults" style="display: none;">
+            <h3>No games found</h3>
+            <p>Try adjusting your search or filters to find more games.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <p class="footer-text">&copy; 2025 GameFinder. All game data is for demonstration purposes only.</p>
+            <p class="footer-text">Created with ❤️ for gamers everywhere</p>
+        </div>
+    </footer>
+
+    <script>
+        // Game Database - Hardcoded for this example
+        const gameDatabase = [
+            {
+                id: 1,
+                title: "The Witcher 3: Wild Hunt",
+                genre: "RPG",
+                platform: "PC, PlayStation, Xbox, Switch",
+                description: "An epic action RPG with a mature story and open world.",
+                releaseYear: 2015,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=The+Witcher+3"
+            },
+            {
+                id: 2,
+                title: "Red Dead Redemption 2",
+                genre: "Action Adventure",
+                platform: "PlayStation, Xbox, PC",
+                description: "An epic tale of life in America's unforgiving heartland.",
+                releaseYear: 2018,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Red+Dead+Redemption+2"
+            },
+            {
+                id: 3,
+                title: "The Legend of Zelda: Breath of the Wild",
+                genre: "Action Adventure",
+                platform: "Nintendo Switch",
+                description: "Step into a world of discovery, exploration, and adventure.",
+                releaseYear: 2017,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Zelda+BOTW"
+            },
+            {
+                id: 4,
+                title: "God of War",
+                genre: "Action Adventure",
+                platform: "PlayStation, PC",
+                description: "Journey as Kratos, a father, warrior, and monster in the realm of Norse gods.",
+                releaseYear: 2018,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=God+of+War"
+            },
+            {
+                id: 5,
+                title: "Elden Ring",
+                genre: "RPG",
+                platform: "PC, PlayStation, Xbox",
+                description: "An action RPG developed by FromSoftware and written by George R. R. Martin.",
+                releaseYear: 2022,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Elden+Ring"
+            },
+            {
+                id: 6,
+                title: "Hades",
+                genre: "Roguelike",
+                platform: "PC, PlayStation, Xbox, Switch",
+                description: "Defy the god of the dead as you hack and slash out of the Underworld.",
+                releaseYear: 2020,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Hades"
+            },
+            {
+                id: 7,
+                title: "Cyberpunk 2077",
+                genre: "RPG",
+                platform: "PC, PlayStation, Xbox",
+                description: "An open-world, action-adventure story set in Night City.",
+                releaseYear: 2020,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Cyberpunk+2077"
+            },
+            {
+                id: 8,
+                title: "Horizon Zero Dawn",
+                genre: "Action RPG",
+                platform: "PlayStation, PC",
+                description: "A post-apocalyptic world dominated by machines.",
+                releaseYear: 2017,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Horizon+Zero+Dawn"
+            },
+            {
+                id: 9,
+                title: "Super Mario Odyssey",
+                genre: "Platformer",
+                platform: "Nintendo Switch",
+                description: "Join Mario on a massive, globe-trotting 3D adventure.",
+                releaseYear: 2017,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Super+Mario+Odyssey"
+            },
+            {
+                id: 10,
+                title: "Minecraft",
+                genre: "Sandbox",
+                platform: "PC, PlayStation, Xbox, Switch, Mobile",
+                description: "Build, explore, and survive in a blocky, procedurally-generated 3D world.",
+                releaseYear: 2011,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Minecraft"
+            },
+            {
+                id: 11,
+                title: "Fortnite",
+                genre: "Battle Royale",
+                platform: "PC, PlayStation, Xbox, Switch, Mobile",
+                description: "A free-to-play battle royale game with building mechanics.",
+                releaseYear: 2017,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Fortnite"
+            },
+            {
+                id: 12,
+                title: "Overwatch",
+                genre: "FPS",
+                platform: "PC, PlayStation, Xbox, Switch",
+                description: "A team-based multiplayer first-person shooter.",
+                releaseYear: 2016,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Overwatch"
+            },
+            {
+                id: 13,
+                title: "Hollow Knight",
+                genre: "Metroidvania",
+                platform: "PC, PlayStation, Xbox, Switch",
+                description: "A challenging 2D action-adventure with a beautiful, ruined world.",
+                releaseYear: 2017,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Hollow+Knight"
+            },
+            {
+                id: 14,
+                title: "Stardew Valley",
+                genre: "Simulation",
+                platform: "PC, PlayStation, Xbox, Switch, Mobile",
+                description: "An open-ended country-life RPG where you inherit your grandfather's farm.",
+                releaseYear: 2016,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Stardew+Valley"
+            },
+            {
+                id: 15,
+                title: "Among Us",
+                genre: "Social Deduction",
+                platform: "PC, PlayStation, Xbox, Switch, Mobile",
+                description: "A party game of teamwork and betrayal for 4-15 players.",
+                releaseYear: 2018,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Among+Us"
+            },
+            {
+                id: 16,
+                title: "Doom Eternal",
+                genre: "FPS",
+                platform: "PC, PlayStation, Xbox, Switch",
+                description: "Hell's armies have invaded Earth. Become the Slayer in an epic single-player campaign.",
+                releaseYear: 2020,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Doom+Eternal"
+            },
+            {
+                id: 17,
+                title: "Animal Crossing: New Horizons",
+                genre: "Simulation",
+                platform: "Nintendo Switch",
+                description: "Create your own paradise as you explore, create, and customize your island.",
+                releaseYear: 2020,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Animal+Crossing"
+            },
+            {
+                id: 18,
+                title: "Final Fantasy VII Remake",
+                genre: "RPG",
+                platform: "PlayStation, PC",
+                description: "A reimagining of the iconic original with a hybrid battle system.",
+                releaseYear: 2020,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=FF7+Remake"
+            },
+            {
+                id: 19,
+                title: "Persona 5 Royal",
+                genre: "JRPG",
+                platform: "PlayStation, PC, Switch",
+                description: "A coming-of-age story following a group of troubled high school students.",
+                releaseYear: 2020,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Persona+5"
+            },
+            {
+                id: 20,
+                title: "Sekiro: Shadows Die Twice",
+                genre: "Action Adventure",
+                platform: "PC, PlayStation, Xbox",
+                description: "A third-person, action-adventure game with RPG elements.",
+                releaseYear: 2019,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Sekiro"
+            },
+            {
+                id: 21,
+                title: "Ghost of Tsushima",
+                genre: "Action Adventure",
+                platform: "PlayStation",
+                description: "An open-world action-adventure set in feudal Japan.",
+                releaseYear: 2020,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Ghost+of+Tsushima"
+            },
+            {
+                id: 22,
+                title: "Halo Infinite",
+                genre: "FPS",
+                platform: "Xbox, PC",
+                description: "The next chapter in the legendary Halo franchise.",
+                releaseYear: 2021,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Halo+Infinite"
+            },
+            {
+                id: 23,
+                title: "Death Stranding",
+                genre: "Action",
+                platform: "PlayStation, PC",
+                description: "A genre-defying experience from Hideo Kojima.",
+                releaseYear: 2019,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Death+Stranding"
+            },
+            {
+                id: 24,
+                title: "Resident Evil Village",
+                genre: "Horror",
+                platform: "PC, PlayStation, Xbox",
+                description: "The eighth major installment in the Resident Evil series.",
+                releaseYear: 2021,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=RE+Village"
+            },
+            {
+                id: 25,
+                title: "Assassin's Creed Valhalla",
+                genre: "Action RPG",
+                platform: "PC, PlayStation, Xbox",
+                description: "Become a legendary Viking warrior raised on tales of battle and glory.",
+                releaseYear: 2020,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=AC+Valhalla"
+            },
+            {
+                id: 26,
+                title: "Valorant",
+                genre: "FPS",
+                platform: "PC",
+                description: "A 5v5 character-based tactical shooter.",
+                releaseYear: 2020,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Valorant"
+            },
+            {
+                id: 27,
+                title: "Genshin Impact",
+                genre: "Action RPG",
+                platform: "PC, PlayStation, Mobile",
+                description: "An open-world action RPG with gacha mechanics.",
+                releaseYear: 2020,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Genshin+Impact"
+            },
+            {
+                id: 28,
+                title: "Celeste",
+                genre: "Platformer",
+                platform: "PC, PlayStation, Xbox, Switch",
+                description: "Help Madeline survive her journey to the top of Celeste Mountain.",
+                releaseYear: 2018,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Celeste"
+            },
+            {
+                id: 29,
+                title: "Control",
+                genre: "Action Adventure",
+                platform: "PC, PlayStation, Xbox",
+                description: "A supernatural third-person action-adventure.",
+                releaseYear: 2019,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Control"
+            },
+            {
+                id: 30,
+                title: "Disco Elysium",
+                genre: "RPG",
+                platform: "PC, PlayStation, Xbox, Switch",
+                description: "A groundbreaking open-world RPG with unprecedented freedom of choice.",
+                releaseYear: 2019,
+                imageUrl: "/placeholder.svg?height=150&width=250&text=Disco+Elysium"
+            }
+        ];
+
+        // DOM Elements
+        const searchForm = document.getElementById('searchForm');
+        const searchInput = document.getElementById('searchInput');
+        const autocompleteContainer = document.getElementById('autocompleteContainer');
+        const genreFilter = document.getElementById('genreFilter');
+        const platformFilter = document.getElementById('platformFilter');
+        const sortBySelect = document.getElementById('sortBy');
+        const gameGrid = document.getElementById('gameGrid');
+        const resultsInfo = document.getElementById('resultsInfo');
+        const noResults = document.getElementById('noResults');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        // Initialize the application
+        function initApp() {
+            // Populate filter dropdowns
+            populateFilters();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Initial search to show all games
+            searchGames();
+        }
+
+        // Populate filter dropdowns with unique values from the game database
+        function populateFilters() {
+            // Get unique genres
+            const genres = [...new Set(gameDatabase.map(game => game.genre))].sort();
+            genres.forEach(genre => {
+                const option = document.createElement('option');
+                option.value = genre;
+                option.textContent = genre;
+                genreFilter.appendChild(option);
+            });
+            
+            // Get unique platforms (this is more complex as platforms are comma-separated)
+            const platformSet = new Set();
+            gameDatabase.forEach(game => {
+                const platforms = game.platform.split(', ');
+                platforms.forEach(platform => {
+                    // Further split by comma and handle multiple platforms
+                    platform.split(',').forEach(p => {
+                        platformSet.add(p.trim());
+                    });
+                });
+            });
+            
+            // Sort and add platform options
+            [...platformSet].sort().forEach(platform => {
+                const option = document.createElement('option');
+                option.value = platform;
+                option.textContent = platform;
+                platformFilter.appendChild(option);
+            });
+        }
+
+        // Set up event listeners for search and filters
+        function setupEventListeners() {
+            // Search form submission
+            searchForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                searchGames();
+            });
+            
+            // Input for autocomplete
+            searchInput.addEventListener('input', handleAutocomplete);
+            
+            // Hide autocomplete when clicking outside
+            document.addEventListener('click', function(e) {
+                if (e.target !== searchInput && e.target !== autocompleteContainer) {
+                    autocompleteContainer.style.display = 'none';
+                }
+            });
+            
+            // Filter changes
+            genreFilter.addEventListener('change', searchGames);
+            platformFilter.addEventListener('change', searchGames);
+            sortBySelect.addEventListener('change', searchGames);
+        }
+
+        // Handle autocomplete suggestions
+        function handleAutocomplete() {
+            const query = searchInput.value.toLowerCase().trim();
+            
+            if (query.length < 2) {
+                autocompleteContainer.style.display = 'none';
+                return;
+            }
+            
+            // Find matching games
+            const matchingGames = gameDatabase.filter(game => {
+                return (
+                    game.title.toLowerCase().includes(query) ||
+                    game.genre.toLowerCase().includes(query) ||
+                    game.platform.toLowerCase().includes(query)
+                );
+            }).slice(0, 5); // Limit to 5 suggestions
+            
+            // Clear previous suggestions
+            autocompleteContainer.innerHTML = '';
+            
+            if (matchingGames.length > 0) {
+                matchingGames.forEach(game => {
+                    const item = document.createElement('div');
+                    item.className = 'autocomplete-item';
+                    item.textContent = game.title;
+                    
+                    // Add click event to fill the search input
+                    item.addEventListener('click', function() {
+                        searchInput.value = game.title;
+                        autocompleteContainer.style.display = 'none';
+                        searchGames();
+                    });
+                    
+                    autocompleteContainer.appendChild(item);
+                });
+                
+                autocompleteContainer.style.display = 'block';
+            } else {
+                autocompleteContainer.style.display = 'none';
+            }
+        }
+
+        // Search games based on current filters and search query
+        function searchGames() {
+            // Show loading spinner
+            loadingSpinner.style.display = 'block';
+            gameGrid.innerHTML = '';
+            noResults.style.display = 'none';
+            
+            // Get filter values
+            const searchQuery = searchInput.value.toLowerCase().trim();
+            const genreValue = genreFilter.value;
+            const platformValue = platformFilter.value;
+            const sortByValue = sortBySelect.value;
+            
+            // Simulate network delay for loading effect
+            setTimeout(() => {
+                // Filter games
+                let filteredGames = gameDatabase.filter(game => {
+                    // Search query filter
+                    const matchesSearch = searchQuery === '' || 
+                        game.title.toLowerCase().includes(searchQuery) ||
+                        game.genre.toLowerCase().includes(searchQuery) ||  ||
+                        game.genre.toLowerCase().includes(searchQuery) ||
+                        game.platform.toLowerCase().includes(searchQuery);
+                    
+                    // Genre filter
+                    const matchesGenre = genreValue === '' || game.genre === genreValue;
+                    
+                    // Platform filter
+                    const matchesPlatform = platformValue === '' || game.platform.includes(platformValue);
+                    
+                    return matchesSearch && matchesGenre && matchesPlatform;
+                });
+                
+                // Sort games
+                filteredGames.sort((a, b) => {
+                    if (sortByValue === 'releaseYear') {
+                        return b.releaseYear - a.releaseYear; // Newest first
+                    } else {
+                        // Sort by title alphabetically
+                        return a.title.localeCompare(b.title);
+                    }
+                });
+                
+                // Update results info
+                resultsInfo.textContent = `Showing ${filteredGames.length} of ${gameDatabase.length} games`;
+                
+                // Display games or show no results message
+                if (filteredGames.length > 0) {
+                    renderGames(filteredGames);
+                } else {
+                    noResults.style.display = 'block';
+                }
+                
+                // Hide loading spinner
+                loadingSpinner.style.display = 'none';
+            }, 300); // Simulate network delay
+        }
+
+        // Render games to the game grid
+        function renderGames(games) {
+            gameGrid.innerHTML = '';
+            
+            games.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                
+                gameCard.innerHTML = `
+                    <img src="${game.imageUrl}" alt="${game.title}" class="game-image">
+                    <div class="game-info">
+                        <h3 class="game-title">${game.title}</h3>
+                        <div class="game-meta">
+                            <span class="game-genre">${game.genre}</span>
+                            <span class="game-platform">${game.platform.split(',')[0]}</span>
+                            <span class="game-platform">${game.releaseYear}</span>
+                        </div>
+                        <p class="game-description">${game.description}</p>
+                    </div>
+                `;
+                
+                gameGrid.appendChild(gameCard);
+            });
+        }
+
+        // Initialize the application when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
