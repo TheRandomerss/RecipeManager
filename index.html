@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="ppck-ver" content="1216daf1479ea66f6e3c203f352e9ba0" />
     <title>GameFinder - Video Game Search Engine</title>
     <style>
         /* CSS Reset and Base Styles */
@@ -220,6 +221,12 @@
             width: 100%;
             height: 150px;
             object-fit: cover;
+            background-color: var(--card-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            font-weight: 600;
         }
 
         .game-info {
@@ -243,7 +250,7 @@
             flex-wrap: wrap;
         }
 
-        .game-genre, .game-platform {
+        .game-genre, .game-platform, .game-year {
             font-size: 0.75rem;
             padding: 0.25rem 0.5rem;
             border-radius: 9999px;
@@ -436,7 +443,7 @@
                 platform: "PC, PlayStation, Xbox, Switch",
                 description: "An epic action RPG with a mature story and open world.",
                 releaseYear: 2015,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=The+Witcher+3"
+                imageColor: "#3c275a"
             },
             {
                 id: 2,
@@ -445,7 +452,7 @@
                 platform: "PlayStation, Xbox, PC",
                 description: "An epic tale of life in America's unforgiving heartland.",
                 releaseYear: 2018,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Red+Dead+Redemption+2"
+                imageColor: "#7d3b16"
             },
             {
                 id: 3,
@@ -454,7 +461,7 @@
                 platform: "Nintendo Switch",
                 description: "Step into a world of discovery, exploration, and adventure.",
                 releaseYear: 2017,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Zelda+BOTW"
+                imageColor: "#4a8f43"
             },
             {
                 id: 4,
@@ -463,7 +470,7 @@
                 platform: "PlayStation, PC",
                 description: "Journey as Kratos, a father, warrior, and monster in the realm of Norse gods.",
                 releaseYear: 2018,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=God+of+War"
+                imageColor: "#2a4c7d"
             },
             {
                 id: 5,
@@ -472,7 +479,7 @@
                 platform: "PC, PlayStation, Xbox",
                 description: "An action RPG developed by FromSoftware and written by George R. R. Martin.",
                 releaseYear: 2022,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Elden+Ring"
+                imageColor: "#8a6c3a"
             },
             {
                 id: 6,
@@ -481,7 +488,7 @@
                 platform: "PC, PlayStation, Xbox, Switch",
                 description: "Defy the god of the dead as you hack and slash out of the Underworld.",
                 releaseYear: 2020,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Hades"
+                imageColor: "#b92e2e"
             },
             {
                 id: 7,
@@ -490,7 +497,7 @@
                 platform: "PC, PlayStation, Xbox",
                 description: "An open-world, action-adventure story set in Night City.",
                 releaseYear: 2020,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Cyberpunk+2077"
+                imageColor: "#f9e04c"
             },
             {
                 id: 8,
@@ -499,7 +506,7 @@
                 platform: "PlayStation, PC",
                 description: "A post-apocalyptic world dominated by machines.",
                 releaseYear: 2017,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Horizon+Zero+Dawn"
+                imageColor: "#4c8f8f"
             },
             {
                 id: 9,
@@ -508,7 +515,7 @@
                 platform: "Nintendo Switch",
                 description: "Join Mario on a massive, globe-trotting 3D adventure.",
                 releaseYear: 2017,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Super+Mario+Odyssey"
+                imageColor: "#e42c2c"
             },
             {
                 id: 10,
@@ -517,7 +524,7 @@
                 platform: "PC, PlayStation, Xbox, Switch, Mobile",
                 description: "Build, explore, and survive in a blocky, procedurally-generated 3D world.",
                 releaseYear: 2011,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Minecraft"
+                imageColor: "#5d8f3f"
             },
             {
                 id: 11,
@@ -526,7 +533,7 @@
                 platform: "PC, PlayStation, Xbox, Switch, Mobile",
                 description: "A free-to-play battle royale game with building mechanics.",
                 releaseYear: 2017,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Fortnite"
+                imageColor: "#2c96e4"
             },
             {
                 id: 12,
@@ -535,7 +542,7 @@
                 platform: "PC, PlayStation, Xbox, Switch",
                 description: "A team-based multiplayer first-person shooter.",
                 releaseYear: 2016,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Overwatch"
+                imageColor: "#f99e1a"
             },
             {
                 id: 13,
@@ -544,7 +551,7 @@
                 platform: "PC, PlayStation, Xbox, Switch",
                 description: "A challenging 2D action-adventure with a beautiful, ruined world.",
                 releaseYear: 2017,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Hollow+Knight"
+                imageColor: "#3a4d5c"
             },
             {
                 id: 14,
@@ -553,7 +560,7 @@
                 platform: "PC, PlayStation, Xbox, Switch, Mobile",
                 description: "An open-ended country-life RPG where you inherit your grandfather's farm.",
                 releaseYear: 2016,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Stardew+Valley"
+                imageColor: "#4a8f43"
             },
             {
                 id: 15,
@@ -562,7 +569,7 @@
                 platform: "PC, PlayStation, Xbox, Switch, Mobile",
                 description: "A party game of teamwork and betrayal for 4-15 players.",
                 releaseYear: 2018,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Among+Us"
+                imageColor: "#c51111"
             },
             {
                 id: 16,
@@ -571,7 +578,7 @@
                 platform: "PC, PlayStation, Xbox, Switch",
                 description: "Hell's armies have invaded Earth. Become the Slayer in an epic single-player campaign.",
                 releaseYear: 2020,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Doom+Eternal"
+                imageColor: "#b92e2e"
             },
             {
                 id: 17,
@@ -580,7 +587,7 @@
                 platform: "Nintendo Switch",
                 description: "Create your own paradise as you explore, create, and customize your island.",
                 releaseYear: 2020,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Animal+Crossing"
+                imageColor: "#7ecce8"
             },
             {
                 id: 18,
@@ -589,7 +596,7 @@
                 platform: "PlayStation, PC",
                 description: "A reimagining of the iconic original with a hybrid battle system.",
                 releaseYear: 2020,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=FF7+Remake"
+                imageColor: "#3a4d5c"
             },
             {
                 id: 19,
@@ -598,7 +605,7 @@
                 platform: "PlayStation, PC, Switch",
                 description: "A coming-of-age story following a group of troubled high school students.",
                 releaseYear: 2020,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Persona+5"
+                imageColor: "#e42c2c"
             },
             {
                 id: 20,
@@ -607,7 +614,7 @@
                 platform: "PC, PlayStation, Xbox",
                 description: "A third-person, action-adventure game with RPG elements.",
                 releaseYear: 2019,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Sekiro"
+                imageColor: "#8a6c3a"
             },
             {
                 id: 21,
@@ -616,7 +623,7 @@
                 platform: "PlayStation",
                 description: "An open-world action-adventure set in feudal Japan.",
                 releaseYear: 2020,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Ghost+of+Tsushima"
+                imageColor: "#c51111"
             },
             {
                 id: 22,
@@ -625,7 +632,7 @@
                 platform: "Xbox, PC",
                 description: "The next chapter in the legendary Halo franchise.",
                 releaseYear: 2021,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Halo+Infinite"
+                imageColor: "#2a4c7d"
             },
             {
                 id: 23,
@@ -634,7 +641,7 @@
                 platform: "PlayStation, PC",
                 description: "A genre-defying experience from Hideo Kojima.",
                 releaseYear: 2019,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Death+Stranding"
+                imageColor: "#3a4d5c"
             },
             {
                 id: 24,
@@ -643,7 +650,7 @@
                 platform: "PC, PlayStation, Xbox",
                 description: "The eighth major installment in the Resident Evil series.",
                 releaseYear: 2021,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=RE+Village"
+                imageColor: "#5d5d5d"
             },
             {
                 id: 25,
@@ -652,7 +659,7 @@
                 platform: "PC, PlayStation, Xbox",
                 description: "Become a legendary Viking warrior raised on tales of battle and glory.",
                 releaseYear: 2020,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=AC+Valhalla"
+                imageColor: "#3c275a"
             },
             {
                 id: 26,
@@ -661,7 +668,7 @@
                 platform: "PC",
                 description: "A 5v5 character-based tactical shooter.",
                 releaseYear: 2020,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Valorant"
+                imageColor: "#ff4655"
             },
             {
                 id: 27,
@@ -670,7 +677,7 @@
                 platform: "PC, PlayStation, Mobile",
                 description: "An open-world action RPG with gacha mechanics.",
                 releaseYear: 2020,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Genshin+Impact"
+                imageColor: "#4a8f43"
             },
             {
                 id: 28,
@@ -679,7 +686,7 @@
                 platform: "PC, PlayStation, Xbox, Switch",
                 description: "Help Madeline survive her journey to the top of Celeste Mountain.",
                 releaseYear: 2018,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Celeste"
+                imageColor: "#2c96e4"
             },
             {
                 id: 29,
@@ -688,7 +695,7 @@
                 platform: "PC, PlayStation, Xbox",
                 description: "A supernatural third-person action-adventure.",
                 releaseYear: 2019,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Control"
+                imageColor: "#b92e2e"
             },
             {
                 id: 30,
@@ -697,7 +704,7 @@
                 platform: "PC, PlayStation, Xbox, Switch",
                 description: "A groundbreaking open-world RPG with unprecedented freedom of choice.",
                 releaseYear: 2019,
-                imageUrl: "/placeholder.svg?height=150&width=250&text=Disco+Elysium"
+                imageColor: "#2a4c7d"
             }
         ];
 
@@ -889,18 +896,49 @@
                 const gameCard = document.createElement('div');
                 gameCard.className = 'game-card';
                 
-                gameCard.innerHTML = `
-                    <img src="${game.imageUrl}" alt="${game.title}" class="game-image">
-                    <div class="game-info">
-                        <h3 class="game-title">${game.title}</h3>
-                        <div class="game-meta">
-                            <span class="game-genre">${game.genre}</span>
-                            <span class="game-platform">${game.platform.split(',')[0]}</span>
-                            <span class="game-platform">${game.releaseYear}</span>
-                        </div>
-                        <p class="game-description">${game.description}</p>
-                    </div>
-                `;
+                // Create game image div instead of using an actual image
+                const gameImageDiv = document.createElement('div');
+                gameImageDiv.className = 'game-image';
+                gameImageDiv.style.backgroundColor = game.imageColor || '#374151';
+                gameImageDiv.textContent = game.title;
+                
+                const gameInfo = document.createElement('div');
+                gameInfo.className = 'game-info';
+                
+                const gameTitle = document.createElement('h3');
+                gameTitle.className = 'game-title';
+                gameTitle.textContent = game.title;
+                
+                const gameMeta = document.createElement('div');
+                gameMeta.className = 'game-meta';
+                
+                const gameGenre = document.createElement('span');
+                gameGenre.className = 'game-genre';
+                gameGenre.textContent = game.genre;
+                
+                const gamePlatform = document.createElement('span');
+                gamePlatform.className = 'game-platform';
+                gamePlatform.textContent = game.platform.split(',')[0];
+                
+                const gameYear = document.createElement('span');
+                gameYear.className = 'game-year';
+                gameYear.textContent = game.releaseYear;
+                
+                const gameDescription = document.createElement('p');
+                gameDescription.className = 'game-description';
+                gameDescription.textContent = game.description;
+                
+                // Append elements
+                gameMeta.appendChild(gameGenre);
+                gameMeta.appendChild(gamePlatform);
+                gameMeta.appendChild(gameYear);
+                
+                gameInfo.appendChild(gameTitle);
+                gameInfo.appendChild(gameMeta);
+                gameInfo.appendChild(gameDescription);
+                
+                gameCard.appendChild(gameImageDiv);
+                gameCard.appendChild(gameInfo);
                 
                 gameGrid.appendChild(gameCard);
             });
